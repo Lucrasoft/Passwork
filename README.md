@@ -64,7 +64,7 @@ var passes = await ctx.Query()
 From the context object you receive, after the login, you can perform the following methods.
 
 Methods (async) | Returns
-- |-
+--- | ---
 `AddVault(string name, bool isPrivate)` | [`IVault`](#ivault)
 `GetVaults()` | [`IVault[]`](#ivault) 
 `GetVaultByName(string name)` | [`IVault`](#ivault)
