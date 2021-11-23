@@ -21,7 +21,7 @@ var ctx = await client.Login("<apikey>", "<optional masterpassword>");
 var vault = await ctx.AddVault("SampleVault", false);
 
 //With the vault object , you can add Folders (and passwords directly in the vault).
-var folder = vault.AddFolder("SampleFolder");
+var folder = await vault.AddFolder("SampleFolder");
 
 //Creating a password in the folder object you just obtained.
 var p = folder.CreatePassword();
