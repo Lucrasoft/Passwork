@@ -70,6 +70,12 @@ namespace Passwork
         /// <returns></returns>
         Task<string[]> GetTags();
 
+        /// <summary>
+        /// Search for passwords within THIS vaults.
+        /// </summary>
+        /// <returns>A query builder </returns>
+        IPasswordQuery Query();
+
         Task<string> GetMaster();
 
     }

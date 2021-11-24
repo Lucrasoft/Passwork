@@ -46,7 +46,12 @@ namespace Passwork
         //    }
         //    return this;
         //}
-     
+
+
+        public IPasswordQuery Query()
+        {
+            return new PasswordQuery(conn, this.Id);
+        }
 
         async Task<string> IVault.GetMaster()
         {

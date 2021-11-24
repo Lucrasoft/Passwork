@@ -6,11 +6,6 @@ using System.Threading.Tasks;
 
 namespace Passwork.Models
 {
-
-     //"domainId": "61852f92eb3bf46a3a3831e6",
-     //   "access": "admin",
-     //   "mpCrypted": "YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWE=",
-     //   "selected": true
     class Domain
     {
         public string domainId { get; set; }

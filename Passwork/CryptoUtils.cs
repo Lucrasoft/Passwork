@@ -13,7 +13,7 @@ namespace Passwork
     public static class CryptoUtils
     {
 
-        private static SHA256 sha256 = SHA256Managed.Create();
+        private static SHA256 sha256 = SHA256.Create();
 
 
         /// <summary>
@@ -23,6 +23,7 @@ namespace Passwork
         /// <returns>A hex lowercase sha256 of the input.</returns>
         public static string Hash(string input)
         {
+            if (string.IsNullOrEmpty(input)) { return null; }
             var input_as_utf8 = Encoding.UTF8.GetBytes(input);
             var input_hash = sha256.ComputeHash(input_as_utf8);
             var hex = ByteArrayToString(input_hash).ToLower();

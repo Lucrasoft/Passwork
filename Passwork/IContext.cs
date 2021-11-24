@@ -48,9 +48,9 @@ namespace Passwork
         Task<string[]> GetTags();
 
         /// <summary>
-        /// Get acces to the query builder.
+        /// Search for passwords within all vaults.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A query builder </returns>
         IPasswordQuery Query();
 
     }

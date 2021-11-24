@@ -87,19 +87,16 @@ namespace Passwork
 
             //first, parse the response as object... in case of an error, the .data part of the response 
             //might not be TResponse..
-
-            //var x = (JObject)value2.data;
-            //var data = x.ToObject<TResponse>();
-            var value2 = JsonConvert.DeserializeObject<Response<object>>(content);
+            var value = JsonConvert.DeserializeObject<Response<object>>(content);
 
             //var value = JsonConvert.DeserializeObject<Response<TResponse>>(content);
-            if (value2.status != "success")
+            if (value.status != "success")
             {
-                lastError = $"{value2.status} - {value2.code} - {value2.data}";
+                lastError = $"{value.status} - {value.code} - {value.data}";
                 return new Response<TResponse>
                 {
-                    code = value2.code,
-                    status = value2.status,
+                    code = value.code,
+                    status = value.status,
                     data = default(TResponse)
                 };
             }
@@ -108,9 +105,9 @@ namespace Passwork
                 //value
                 return new Response<TResponse>
                 {
-                    code = value2.code,
-                    status = value2.status,
-                    data = typeof(TResponse).IsArray?((JArray)value2.data).ToObject<TResponse>() : ((JObject)value2.data).ToObject<TResponse>()
+                    code = value.code,
+                    status = value.status,
+                    data = typeof(TResponse).IsArray?((JArray)value.data).ToObject<TResponse>() : ((JObject)value.data).ToObject<TResponse>()
                 };
             }
         }

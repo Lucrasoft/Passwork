@@ -49,20 +49,24 @@ namespace Passwork
 
         public IPasswordQuery WhereFieldsLike(string text)
         {
-            //TODO : Passwork needs text to be at least 2 chars.
+            if (text.Length<=2)
+            {
+                throw new ArgumentOutOfRangeException("Provided text should be 2 characters at least.");
+            }
             this.search = text;
             return this;
         }
 
         public async Task<IPassword[]> Get()
         {
+            //build up the json request.
             var requestObj = new SearchRequest();
             if (colors.Count>0) { requestObj.colors = colors.ToArray(); }
             if (tags.Count>0) { requestObj.tags = tags.ToArray(); }
             if (!string.IsNullOrEmpty(vaultId)) { requestObj.vaultId = vaultId; }
             if (!string.IsNullOrEmpty(search)) { requestObj.query = search; }
 
-            //validate the requestObj...
+            //validate the requestObj...?
 
             var response = await conn.Post<SearchRequest, PasswordListItem[]>("passwords/search", requestObj);
             if (response.status == "success")
