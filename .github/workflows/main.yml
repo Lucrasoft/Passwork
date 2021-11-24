@@ -9,7 +9,7 @@ jobs:
     if: ${{ contains(github.ref, 'main') }}
     runs-on: windows-latest
     env:
-      VERSION: ${{env.MAJOR}}.${{env.MINOR}}.${{github.run_number}}
+      VERSION: ${{MAJOR}}.${{MINOR}}.${{github.run_number}}
       PRELEASE: false
     defaults:
       run:
