@@ -1,16 +1,16 @@
 ﻿# .NET Connector for Passwork Pro (self hosted)
 
-A .NET Standard 2.1 library for the REST API of passwork.pro self hosted instance. Based on v4 of the REST API.
+A .NET Standard 2.1 library for the REST API of Passwork Pro (self hosted) instance. Based on v4 of the REST API.
  
 
 This .NET Connector uses a database-like context object, to access vaults, folders and passwords.
-It supports both master password enabled/disabled situation.
+It supports both master password enabled/disabled situations.
 
 ## Getting started
 
 Get yourself a context object, which gives access to all options.
 
-``` c#
+``` cs
 //create the client 
 var client = new Client("https://your-server/api/v4/");
 
@@ -34,7 +34,7 @@ await p.Save();
 To read the password field and the custom fields in an `IPassword` object, you must first unlock the secrets by calling `Unlock`.
 Example:
 
-``` c#
+``` cs
 var folder = await vault.GetFolderByName("MyFolder");
 var passes = await folder.GetPasswords();
 
@@ -50,7 +50,7 @@ Console.WriteLine($"{p.Pass}");
 You can also search passwords, based on some query string, or tags, or colors.
 Searching can start from the context, or from a specific vault.
 
-``` c#
+``` cs
 var passes = await ctx.Query()
                     .WhereFieldsLike("vpn")
                     .WhereTag("topsecret")
@@ -64,7 +64,7 @@ var passes = await ctx.Query()
 From the context object you receive, after the login, you can perform the following methods.
 
 Methods (async) | Returns
-- |-
+---|---
 `AddVault(string name, bool isPrivate)` | [`IVault`](#ivault)
 `GetVaults()` | [`IVault[]`](#ivault) 
 `GetVaultByName(string name)` | [`IVault`](#ivault)
