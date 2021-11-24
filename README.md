@@ -1,4 +1,7 @@
-﻿# .NET Connector for Passwork Pro (self hosted)
+﻿
+ [![nuget badge](https://img.shields.io/nuget/v/Lucrasoft.Passwork.svg)](https://www.nuget.org/packages/Lucrasoft.Passwork/)
+
+ # .NET Connector for Passwork Pro (self hosted)
 
 A .NET Standard 2.1 library for the REST API of Passwork Pro (self hosted) instance. Based on v4 of the REST API.
  
