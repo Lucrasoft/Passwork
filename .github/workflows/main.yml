@@ -9,8 +9,8 @@ jobs:
     if: ${{ contains(github.ref, 'main') }}
     runs-on: windows-latest
     env:
-        VERSION: ${{env.MAJOR}}.${{env.MINOR}}.${{github.run_number}}
-        PRELEASE: false
+      VERSION: ${{env.MAJOR}}.${{env.MINOR}}.${{github.run_number}}
+      PRELEASE: false
     defaults:
       run:
         working-directory: ./
@@ -27,13 +27,15 @@ jobs:
     - name: Pack
       run: dotnet pack -c Release -p:PackageVersion=${{env.VERSION}}
     - name: Release Nuget
-      run: dotnet nuget push **/Lucrasoft*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }} --no-symbols true      
+      run: dotnet nuget push **/Lucrasoft*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }} --no-symbols true
+    
+
   build-beta:
     if: ${{ !contains(github.ref, 'main') }}
     runs-on: windows-latest
     env:
-         VERSION: ${{env.MAJOR}}.${{env.MINOR}}.${{github.run_number}}-beta
-         PRERELEASE: true
+      VERSION: ${{env.MAJOR}}.${{env.MINOR}}.${{github.run_number}}-beta
+      PRERELEASE: true
     defaults:
       run:
         working-directory: ./
