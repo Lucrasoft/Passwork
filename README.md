@@ -1,10 +1,10 @@
 ﻿# .NET Connector for Passwork Pro (self hosted)
 
-A .NET Standard 2.0 library for the REST API of passwork.pro self hosted instance. 
+A .NET Standard 2.1 library for the REST API of passwork.pro self hosted instance. Based on v4 of the REST API.
+ 
 
-The library uses a database-like context object, to access vaults, folders and passwords.
-It supports masterpassword enabled self hosted solutions.
-
+This .NET Connector uses a database-like context object, to access vaults, folders and passwords.
+It supports both master password enabled/disabled situation.
 
 ## Getting started
 
@@ -21,7 +21,7 @@ var ctx = await client.Login("<apikey>", "<optional masterpassword>");
 var vault = await ctx.AddVault("SampleVault", false);
 
 //With the vault object , you can add Folders (and passwords directly in the vault).
-var folder = await vault.AddFolder("SampleFolder");
+var folder = vault.AddFolder("SampleFolder");
 
 //Creating a password in the folder object you just obtained.
 var p = folder.CreatePassword();
@@ -64,7 +64,7 @@ var passes = await ctx.Query()
 From the context object you receive, after the login, you can perform the following methods.
 
 Methods (async) | Returns
---- | ---
+- |-
 `AddVault(string name, bool isPrivate)` | [`IVault`](#ivault)
 `GetVaults()` | [`IVault[]`](#ivault) 
 `GetVaultByName(string name)` | [`IVault`](#ivault)

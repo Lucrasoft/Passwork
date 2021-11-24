@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Authors>Lucrasoft</Authors>
+    <Company>Lucrasoft</Company>
+    <PackageId>Lucrasoft.Passwork</PackageId>
+    <Description>A .NET Standard 2.1 connector for Passwork Pro (self hosted) API v4.</Description>
+    <RepositoryUrl>https://github.com/Lucrasoft/Passwork</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+</Project>
