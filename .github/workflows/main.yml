@@ -1,0 +1,36 @@
+name: CI/CD .NET CORE
+on: push
+env:
+  MAJOR: 1
+  MINOR: 0
+
+jobs: 
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ./
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with: 
+        dotnet-version: '5.0'
+        
+    - if: ${{ contains(github.ref, 'main') }}
+      env:
+        VERSION: ${{env.MAJOR}}.${{env.MINOR}}.${{github.run_number}}
+        PRELEASE: false
+    - if: ${{ !contains(github.ref, 'main') }}
+      run: |
+         VERSION: ${{env.MAJOR}}.${{env.MINOR}}.${{github.run_number}}-beta
+         PRELEASE: true
+    - name: Restore
+      run: dotnet restore
+    - name: Build
+      run: dotnet build -c Release --no-restore
+    - name: Pack
+      run: dotnet pack -c Release -p:PackageVersion=${{env.VERSION}}
+    - name: Release Nuget
+      run: dotnet nuget push **/Lucrasoft*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }} --no-symbols true
+      
