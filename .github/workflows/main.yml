@@ -21,10 +21,12 @@ jobs:
       env:
         VERSION: ${{env.MAJOR}}.${{env.MINOR}}.${{github.run_number}}
         PRELEASE: false
+      run: echo "Using version $env.VERSION"
     - if: ${{ !contains(github.ref, 'main') }}
-      run: |
+      env:
          VERSION: ${{env.MAJOR}}.${{env.MINOR}}.${{github.run_number}}-beta
          PRELEASE: true
+      run: echo "Using version $env.VERSION"
     - name: Restore
       run: dotnet restore
     - name: Build
