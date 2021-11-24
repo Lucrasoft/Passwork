@@ -1,8 +1,5 @@
 name: CI/CD .NET CORE
 on: push
-env:
-  MAJOR: 1
-  MINOR: 0
 
 jobs: 
   build:
@@ -28,13 +25,12 @@ jobs:
       run: dotnet pack -c Release -p:PackageVersion=${{env.VERSION}}
     - name: Release Nuget
       run: dotnet nuget push **/Lucrasoft*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }} --no-symbols true
-    
 
   build-beta:
     if: ${{ !contains(github.ref, 'main') }}
     runs-on: windows-latest
     env:
-      VERSION: ${{env.MAJOR}}.${{env.MINOR}}.${{github.run_number}}-beta
+      VERSION: 1.0.${{github.run_number}}-beta
       PRERELEASE: true
     defaults:
       run:
