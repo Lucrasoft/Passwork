@@ -102,13 +102,24 @@ namespace Passwork
             }
             else
             {
-                //value
-                return new Response<TResponse>
+                //value.data can be either a JObject , JAArray or string.
+                if (typeof(TResponse) == typeof(string))
                 {
-                    code = value.code,
-                    status = value.status,
-                    data = typeof(TResponse).IsArray?((JArray)value.data).ToObject<TResponse>() : ((JObject)value.data).ToObject<TResponse>()
-                };
+                    return new Response<TResponse>
+                    {
+                        code = value.code,
+                        status = value.status,
+                        data = (TResponse)value.data
+                    };
+                } else
+                {
+                    return new Response<TResponse>
+                    {
+                        code = value.code,
+                        status = value.status,
+                        data = typeof(TResponse).IsArray ? ((JArray)value.data).ToObject<TResponse>() : ((JObject)value.data).ToObject<TResponse>()
+                    };
+                }
             }
         }
 

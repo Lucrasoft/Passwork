@@ -84,7 +84,7 @@ namespace Passwork
         public async Task<bool> Delete()
         {
             var result = await conn.Delete<string>($"vaults/{item.id}");
-            if (result.status == "succes")
+            if (result.status == "success")
             {
                 //this.conn = null;
                 this.item = null;
