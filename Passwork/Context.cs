@@ -46,7 +46,6 @@ namespace Passwork
 
         public async Task<IVault[]> GetVaults()
         {
-            
             var vaultitems = await conn.Get<VaultListItem[]>("vaults/list");
             if (vaultitems==null) { return null; }
 

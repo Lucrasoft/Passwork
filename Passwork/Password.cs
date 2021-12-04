@@ -18,8 +18,10 @@ namespace Passwork
 
         //private PasswordSingleItem singleitem;
         private IVault vault;
+        private List<IAttachment> attachments;
 
         public string Id => listitem.id;
+        public string VaultId => listitem.vaultId;
         public string Name { get; set; }
         public string Url { get; set; }
 
@@ -37,6 +39,7 @@ namespace Passwork
         /// </summary>
         public List<CustomField> CustomRecords { get; set; }
 
+     
 
         public Password(IConnection conn, PasswordListItem item)
         {
@@ -50,7 +53,7 @@ namespace Passwork
             }
         }
 
-        public async Task Save()
+        public async Task<IPassword> Save()
         {
             var item = await MapToItem();
             if (item.id == null)
@@ -63,6 +66,7 @@ namespace Passwork
                 await Update(item);
             }
             isLocked = false;
+            return this;
         }
 
 
@@ -98,7 +102,32 @@ namespace Passwork
                     }); ;
                 }
             }
+
+            if (attachments == null) { attachments = new List<IAttachment>(); }
+            attachments.Clear();
+            if (singleitem.attachments != null)
+            {
+                foreach (var attitem in singleitem.attachments)
+                {
+                    attachments.Add(new Attachment(conn, this, attitem));
+                }
+            }
+
             isLocked = false;
+        }
+
+        public async Task<bool> Delete()
+        {
+            var result = await conn.Delete<string>($"passwords/{Id}");
+            return result.status == "success";
+        }
+
+        public async Task<IAttachment[]> GetAttachments()
+        {
+            //setting locked mode, so it will force a refresh.
+            isLocked = true;
+            await Unlock();
+            return attachments.ToArray();
         }
 
         public async Task SetFavorite(bool IsFavorite)
@@ -115,6 +144,46 @@ namespace Passwork
                 result = await conn.Post<string, object>($"passwords/{Id}/unfavorite", null);
             }
             return;
+        }
+
+
+        public async Task<bool> AddAttachment(string name, byte[] data)
+        {
+            if (this.vault == null) { await LoadVault(); }
+
+            string key;
+            string encryptedKey;
+            string encryptedData;
+            if (conn.WithMasterPassword)
+            {
+                var masterPassword = await vault.GetMaster();
+                key = CryptoUtils.GenerateString(32);
+                encryptedKey = CryptoUtils.Encode(key, masterPassword);
+                encryptedData = CryptoUtils.EncodeFile(data, key);
+            }
+            else
+            {
+                key = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+                encryptedKey = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(key));
+                encryptedData = CryptoUtils.EncodeFile(data);
+            }
+
+            
+            var payload = new AttachmentAdd()
+            {
+               encryptedData = encryptedData,
+               encryptedKey = encryptedKey,
+               hash = CryptoUtils.Hash(CryptoUtils.GetStringFromBlob(data)),
+               name = name
+            };
+
+            var result = await conn.Post<AttachmentAdd,string>($"passwords/{Id}/attachment", payload);
+            if (result.status == "success")
+            {
+                return true;
+            }
+            return false;
+            //return new Attachment(conn, this, result.data);
         }
 
         private async Task<PasswordSingleItem> MapToItem()

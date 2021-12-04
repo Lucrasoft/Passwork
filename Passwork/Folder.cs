@@ -58,8 +58,7 @@ namespace Passwork
                     result.Add(new Folder(conn, item));
                 }
             }
-            if (result.Count > 0) { return result.ToArray(); }
-            return null;
+           return result.ToArray(); 
         }
 
         public async Task<IFolder> GetFolderByName(string name)

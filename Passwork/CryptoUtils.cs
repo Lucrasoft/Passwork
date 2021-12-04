@@ -121,6 +121,41 @@ namespace Passwork
             }
         }
 
+
+        public static string EncodeFile(byte[] data, string key =null)
+        {
+            //JS Converter actually parse the data 2 times. 
+            //First is uses GetStringFromBlob, to convert blob into a byte array. 
+            //Secondly the string is converted to Base64.
+
+            //In our case, the data is already a byte array. we skip the GetStringFromBlob part.
+
+            var stringData = Convert.ToBase64String(data);
+            if (string.IsNullOrEmpty(key))
+            {
+                //Yes. It is supposed to be a double Base64 conversion.. see JS Connector source.
+                return Convert.ToBase64String( System.Text.Encoding.UTF8.GetBytes(stringData));
+            }
+            else
+            {
+                return Encode(stringData, key);
+            }
+        }
+
+        public static string GetStringFromBlob(byte[] data)
+        {
+            //Strictly speaking, the getStringFromBlob of the JS COnnector uses String.getCharCode ,which is an UTF16 function according to MDN. 
+            //In JC Connector, the supplied data object are bytes, using UTF8 should result in the same output.
+            return System.Text.Encoding.UTF8.GetString(data);
+        }
+
+        public static byte[] DecodeFile(string encryptedData, string key)
+        {
+            var result = CryptoUtils.Decode(encryptedData, key);
+            return Convert.FromBase64String(result);
+        }
+
+
         /// <summary>
         /// CryptoJS compatible default modes AES encryption
         /// </summary>
@@ -301,5 +336,9 @@ namespace Passwork
                 hex.AppendFormat("{0:x2}", b);
             return hex.ToString();
         }
+
+
+
+
     }
 }

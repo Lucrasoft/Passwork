@@ -67,7 +67,6 @@ namespace Passwork
             if (!string.IsNullOrEmpty(search)) { requestObj.query = search; }
 
             //validate the requestObj...?
-
             var response = await conn.Post<SearchRequest, PasswordListItem[]>("passwords/search", requestObj);
             if (response.status == "success")
             {
