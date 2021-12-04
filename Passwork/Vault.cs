@@ -38,7 +38,7 @@ namespace Passwork
         //public async Task<IVault> Rename(string newname)
         //{
         //    //according to the documentation, this should work. 
-        //    //we even get success, but the name property remains 
+        //    //we even get success, but the name property remains empty
         //    var vaultRename = new VaultRename { name = newname };
         //    var result = await conn.Put<VaultRename, string>($"vaults/{Id}", vaultRename);
         //    if (result.status=="succes") {
@@ -106,7 +106,6 @@ namespace Passwork
             {
                 result.Add(new Password(conn, listitem));
             }
-
             return result.ToArray();
         }
 
@@ -121,8 +120,7 @@ namespace Passwork
                     result.Add(new Folder(conn, itm));
                 }
             }
-            if (result.Count > 0) { return result.ToArray(); }
-            return null;
+            return result.ToArray();
         }
 
         public async Task<IFolder> GetFolderByName(string name)

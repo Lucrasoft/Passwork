@@ -81,7 +81,7 @@ Properties are `Id`, `Name`
 
 Methods (async) | Returns
 -|-
-`CreatePassword()` | [`IPassword`](#ipassword)
+`CreatePassword()` | [`INewPassword`](#inewpassword)
 `GetPasswords()` | [`IPassword[]`](#ipassword)
 `GetFolders()` | [`IFolder[]`](#ifolder)
 `GetFolderByName(string name)` | [`IFolder`](#ifolder)
@@ -100,18 +100,42 @@ Methods (async) | Returns
 `AddFolder(string name)` | [`IFolder`](#ifolder)
 `Rename(string name)` | [`IFolder`](#ifolder)
 `GetFolders()` | [`IFolder[]`](#ifolder)  
-`CreatePassword()` | [`IPassword`](#ipassword)
+`CreatePassword()` | [`INewPassword`](#inewpassword)
 `GetPasswords()` | [`IPassword[]`](#ipassword)  
 `Delete()` | `bool`  
 
-## IPassword
+
+## INewPassword
 
 Properties are : `Id`, `Name`, `Url`, `Password`, `Login`, `Description`, `Tags`, `Color`, `CustomRecords`.
 
+An password object which is just created and not yet saved to the database.
+Calling save will return you IPassword , with more methods.
 
 Methods (async) | Returns 
--|-
+---|---
+`Save()` | [`IPassword`](#ipassword)
+
+
+## IPassword
+
+Extension of INewPassword, provides additional methods.
+
+
+Methods (async) | Returns 
+---|---
 `Save()` | -
 `Unlock()` | -
+`Delete()` | `bool`
 `SetFavorite(bool IsFavorite)` | -
+`AddAttachment(name, byte[] content)` | -
+`GetAttachments()` | [`IAttachment`](#iattachment)
 
+## IAttachment
+
+Properties are : `Id` , `Name`
+
+Methods (async) | Returns 
+---|---
+`GetContent()` | `byte[]`
+`Delete()` | bool
