@@ -52,18 +52,25 @@ namespace Passwork
             //get the details about this password
             var singleitem = await conn.Get<AttachmentSingleItem>($"passwords/{parent.Id}/attachment/{Id}");
 
-            var vsi = await this.conn.Get<VaultSingleItem>($"vaults/{parent.VaultId}");
-            IVault vault = new Vault(conn, vsi);
+            if (conn.WithMasterPassword)
+            {
+                var vsi = await this.conn.Get<VaultSingleItem>($"vaults/{parent.VaultId}");
+                IVault vault = new Vault(conn, vsi);
 
-            var masterPass = await vault.GetMaster();
-            var key = CryptoUtils.Decode(singleitem.encryptedKey, masterPass);
+                var masterPass = await vault.GetMaster();
+                var key = CryptoUtils.Decode(singleitem.encryptedKey, masterPass);
 
-            //TODO i skipped the has check..
-            //if (cryptoInterface.hash(byteCharacters) !== attachment.hash)
-            //{
-            //    throw "Can't decrypt attachment: hashes are not equal";
-            //}
-            data = CryptoUtils.DecodeFile(singleitem.encryptedData, key);
+                //TODO i skipped the has check..
+                //if (cryptoInterface.hash(byteCharacters) !== attachment.hash)
+                //{
+                //    throw "Can't decrypt attachment: hashes are not equal";
+                //}
+                data = CryptoUtils.DecodeFile(singleitem.encryptedData, key);
+            }
+            else
+            {
+                data = Convert.FromBase64String(Base64.Decode(singleitem.encryptedData));
+            }
         }
         
     
